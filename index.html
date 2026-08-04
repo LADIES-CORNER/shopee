@@ -328,12 +328,12 @@
                         const url = asset.browser_download_url;
                         
                         if (name.startsWith('thumbnail')) {
-                            prod.thumbnail = { type: name.endsWith('.mp4') || name.endsWith('.mov') ? 'video' : 'image', url };
+                            prod.thumbnail = { type: name.endsWith('.mp4') || name.endsWith('.mov') || name.endsWith('.webm') ? 'video' : 'image', url };
                         } else if (name === 'link.txt') {
                             prod.linkUrl = url;
-                        } else if (name.endsWith('.mp4') || name.endsWith('.mov')) {
+                        } else if (name.endsWith('.mp4') || name.endsWith('.mov') || name.endsWith('.webm')) {
                             prod.media.push({ type: 'video', url });
-                        } else if (name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg')) {
+                        } else if (name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.webp')) {
                             prod.media.push({ type: 'image', url });
                         }
                     });
@@ -374,25 +374,28 @@
             document.getElementById('product-view').style.display = 'none';
             document.getElementById('back-btn').style.display = 'none';
             
-            const grid = document.getElementById('main-grid');
-            grid.innerHTML = '';
+            // Stop any playing video in the product view
+            document.getElementById('main-media').innerHTML = '';
             
-            products.forEach(p => {
-                const thumb = p.thumbnail || p.media[0];
-                if (!thumb) return; // skip if no visual at all
-                
-                const el = document.createElement('div');
-                el.className = 'product-card';
-                el.onclick = () => window.location.hash = `#product-${p.id}`;
-                
-                if (thumb.type === 'video') {
-                    el.innerHTML = `<video src="${thumb.url}" autoplay loop muted playsinline></video>`;
-                } else {
-                    el.innerHTML = `<img src="${thumb.url}" loading="lazy">`;
-                }
-                
-                grid.appendChild(el);
-            });
+            const grid = document.getElementById('main-grid');
+            if (grid.children.length === 0) {
+                products.forEach(p => {
+                    const thumb = p.thumbnail || p.media[0];
+                    if (!thumb) return; // skip if no visual at all
+                    
+                    const el = document.createElement('div');
+                    el.className = 'product-card';
+                    el.onclick = () => window.location.hash = `#product-${p.id}`;
+                    
+                    if (thumb.type === 'video') {
+                        el.innerHTML = `<video src="${thumb.url}" autoplay loop muted playsinline preload="metadata"></video>`;
+                    } else {
+                        el.innerHTML = `<img src="${thumb.url}" loading="lazy">`;
+                    }
+                    
+                    grid.appendChild(el);
+                });
+            }
             window.scrollTo(0,0);
         }
         
@@ -442,7 +445,7 @@
                     };
                     
                     if (m.type === 'video') {
-                        el.innerHTML = `<video src="${m.url}" muted></video>`;
+                        el.innerHTML = `<video src="${m.url}" autoplay loop muted playsinline></video>`;
                     } else {
                         el.innerHTML = `<img src="${m.url}">`;
                     }
@@ -469,6 +472,10 @@
             const container = document.getElementById('fullscreen-container');
             
             if (m.type === 'video') {
+                // Pause main media video so we don't have overlapping audio
+                const mainVideo = document.querySelector('#main-media video');
+                if (mainVideo) mainVideo.pause();
+                
                 container.innerHTML = `<video src="${m.url}" autoplay controls playsinline></video>`;
             } else {
                 container.innerHTML = `<img src="${m.url}">`;
@@ -480,7 +487,17 @@
             const modal = document.getElementById('fullscreen-modal');
             const container = document.getElementById('fullscreen-container');
             modal.style.display = 'none';
-            container.innerHTML = ''; // stops video playing
+            container.innerHTML = ''; // stops fullscreen video playing
+            
+            // Resume main media video if it exists
+            const mainVideo = document.querySelector('#main-media video');
+            if (mainVideo) {
+                // Catch potential promise rejection if browser blocks autoplay
+                const playPromise = mainVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => console.log("Autoplay prevented:", error));
+                }
+            }
         }
         
         function renderSuggestions() {
@@ -502,7 +519,7 @@
                 };
                 
                 if (thumb.type === 'video') {
-                    el.innerHTML = `<video src="${thumb.url}" autoplay loop muted playsinline></video>`;
+                    el.innerHTML = `<video src="${thumb.url}" autoplay loop muted playsinline preload="metadata"></video>`;
                 } else {
                     el.innerHTML = `<img src="${thumb.url}" loading="lazy">`;
                 }
