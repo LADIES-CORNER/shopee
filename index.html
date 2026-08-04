@@ -1,238 +1,515 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LADIES CORNER | Curated Fashion & Beauty</title>
-  <style>
-    /* Global Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: #fcf8f8;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    /* Header & Navigation */
-    header {
-      background-color: #ffffff;
-      padding: 20px 10%;
-      text-align: center;
-      border-bottom: 2px solid #f2d6dc;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-    }
-
-    header h1 {
-      color: #d81b60;
-      letter-spacing: 2px;
-      font-size: 2rem;
-      text-transform: uppercase;
-    }
-
-    header p {
-      color: #666;
-      font-size: 0.95rem;
-      margin-top: 5px;
-    }
-
-    /* Hero Banner */
-    .hero {
-      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
-      text-align: center;
-      padding: 40px 20px;
-      margin-bottom: 30px;
-    }
-
-    .hero h2 {
-      color: #880e4f;
-      margin-bottom: 10px;
-      font-size: 1.8rem;
-    }
-
-    .hero p {
-      color: #4a148c;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* Product Grid Container */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px 50px 20px;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    /* Product Cards */
-    .card {
-      background: #ffffff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      border: 1px solid #f8bbd0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(216, 27, 96, 0.15);
-    }
-
-    .card-media {
-      width: 100%;
-      height: 280px;
-      background-color: #f5f5f5;
-      position: relative;
-    }
-
-    .card-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .video-container {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-      height: 0;
-      overflow: hidden;
-    }
-
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    .card-body {
-      padding: 20px;
-      text-align: center;
-      flex-grow: 1;
-    }
-
-    .card-body h3 {
-      font-size: 1.2rem;
-      color: #222;
-      margin-bottom: 10px;
-    }
-
-    .card-body p {
-      font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 15px;
-    }
-
-    /* Shopee Affiliate Button */
-    .shopee-btn {
-      display: block;
-      width: 100%;
-      padding: 12px 0;
-      background-color: #ee4d2d; /* Shopee Orange */
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: bold;
-      text-align: center;
-      border-radius: 6px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: background-color 0.2s ease;
-    }
-
-    .shopee-btn:hover {
-      background-color: #d03e1f;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #ffffff;
-      border-top: 1px solid #eee;
-      color: #888;
-      font-size: 0.85rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LADIES CORNER - Shopee Affiliate</title>
+    <!-- Tailwind CSS for styling via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Bold Typography Theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Shopee Brand Colors */
+            --shopee-orange: #ee4d2d;
+            --shopee-bg: #f5f5f5;
+            --shopee-text: #222222;
+        }
+        body {
+            background-color: var(--shopee-bg);
+            color: var(--shopee-text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        .text-shopee { color: var(--shopee-orange); }
+        .bg-shopee { background-color: var(--shopee-orange); }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Horizontal scroll for product media carousel */
+        .media-scroller {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        .media-scroller::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
+        }
+        .media-item {
+            flex: 0 0 100%;
+            scroll-snap-align: start;
+        }
+        
+        /* Fullscreen Modal */
+        #fullscreen-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        #fullscreen-modal.active {
+            display: flex;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
 </head>
 <body>
+    <div id="app" class="relative min-h-screen">
+        
+        <!-- Header -->
+        <header class="bg-shopee text-white p-4 sticky top-0 z-50 shadow-sm flex items-center justify-between max-w-2xl mx-auto">
+            <button id="back-btn" class="hidden text-xl mr-4 w-8"><i class="fas fa-arrow-left"></i></button>
+            <h1 class="text-[22px] md:text-[28px] font-[800] tracking-[-0.03em] uppercase flex-1 text-center truncate">LADIES CORNER</h1>
+            <div class="w-8"></div> <!-- Spacer -->
+        </header>
 
-  <!-- Header Section -->
-  <header>
-    <h1>LADIES CORNER</h1>
-    <p>Your Ultimate Curated Fashion & Beauty Picks</p>
-  </header>
+        <!-- Main Content Area -->
+        <main class="max-w-2xl mx-auto pb-24 bg-white min-h-screen md:border-x border-gray-200">
+            
+            <!-- Loading Indicator -->
+            <div id="loading" class="text-center py-20">
+                <i class="fas fa-spinner fa-spin text-4xl text-shopee"></i>
+                <p class="mt-4 text-gray-500 text-sm">Loading products from GitHub...</p>
+            </div>
 
-  <!-- Hero Banner -->
-  <section class="hero">
-    <h2>Trending Styles & Top Finds</h2>
-    <p>Hand-selected women's apparel, shoes, and accessories directly available on Shopee.</p>
-  </section>
+            <!-- Home View: 2 Column Grid -->
+            <div id="home-view" class="hidden p-2 bg-[var(--shopee-bg)] min-h-screen">
+                <div id="product-grid" class="grid grid-cols-2 gap-2 md:gap-3">
+                    <!-- Product Cards Injected Here -->
+                </div>
+            </div>
 
-  <!-- Main Content Container -->
-  <div class="container">
-    <div class="product-grid">
+            <!-- Product Detail View -->
+            <div id="product-view" class="hidden bg-white min-h-screen pb-10">
+                
+                <!-- Media Carousel Container -->
+                <div class="relative w-full aspect-square bg-black">
+                    <div id="product-media" class="media-scroller w-full h-full">
+                        <!-- Images and Videos Injected Here -->
+                    </div>
+                    <!-- Pagination Indicator -->
+                    <div class="absolute bottom-3 right-3 bg-black bg-opacity-40 border border-white border-opacity-20 text-white px-3 py-1 rounded-full text-xs font-medium" id="media-indicator">
+                        1/1
+                    </div>
+                </div>
 
-      <!-- PRODUCT 1 -->
-      <div class="card">
-        <div class="card-media">
-          <!-- Replace src with your image inside images/product-1/ -->
-          <img src="images/product-1/hero.jpg" alt="Floral Summer Dress">
-        </div>
-        <div class="card-body">
-          <h3>Elegant Floral Summer Dress</h3>
-          <p>Lightweight, breathable fabric perfect for everyday casual wear or weekend dates.</p>
-          <a href="YOUR_SHOPEE_AFFILIATE_LINK_HERE" target="_blank" rel="noopener" class="shopee-btn">Buy on Shopee</a>
-        </div>
-      </div>
+                <!-- Small Thumbnail Selector -->
+                <div class="px-4 pt-3 pb-0">
+                    <div id="product-thumbnails" class="flex gap-2 overflow-x-auto no-scrollbar">
+                        <!-- Small thumbnails injected here -->
+                    </div>
+                </div>
 
-      <!-- PRODUCT 2 (With YouTube Video Embed) -->
-      <div class="card">
-        <div class="video-container">
-          <!-- Replace URL with your Unlisted YouTube Video Embed URL -->
-          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-        </div>
-        <div class="card-body">
-          <h3>Casual High-Waisted Denim Jeans</h3>
-          <p>Watch the full try-on haul above to see the fit, stretch, and fabric detail!</p>
-          <a href="YOUR_SHOPEE_AFFILIATE_LINK_HERE" target="_blank" rel="noopener" class="shopee-btn">Buy on Shopee</a>
-        </div>
-      </div>
+                <!-- Product Details -->
+                <div class="p-4 md:p-6">
+                    <h2 id="detail-title" class="text-[18px] md:text-[20px] text-gray-900 leading-[1.4] mb-3 font-normal"></h2>
+                    
+                    <div class="flex items-center text-[13px] mb-5 text-[#757575]">
+                        <div class="flex text-[#ffce3d] mr-2" id="detail-stars"></div>
+                        <span id="detail-rating-text" class="mr-3 font-medium"></span>
+                        <span id="detail-sold" class="border-l border-[#dbdbdb] pl-3"></span>
+                    </div>
+                    
+                    <hr class="border-gray-100 my-5">
+                    
+                    <div>
+                        <h3 class="text-[15px] font-[600] text-gray-800 mb-3">Product Description</h3>
+                        <div id="detail-description" class="text-[#757575] text-[13px] md:text-[14px] whitespace-pre-wrap leading-relaxed"></div>
+                    </div>
+                </div>
 
-      <!-- PRODUCT 3 -->
-      <div class="card">
-        <div class="card-media">
-          <!-- Replace src with your image inside images/product-3/ -->
-          <img src="images/product-3/hero.jpg" alt="Classic Leather Handbag">
-        </div>
-        <div class="card-body">
-          <h3>Classic Women's Shoulder Bag</h3>
-          <p>Spacious, stylish leather finish to complement any work or evening outfit.</p>
-          <a href="YOUR_SHOPEE_AFFILIATE_LINK_HERE" target="_blank" rel="noopener" class="shopee-btn">Buy on Shopee</a>
-        </div>
-      </div>
-
+                <!-- Fixed Bottom Buy Button -->
+                <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-3 md:p-4 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-40 flex justify-center">
+                    <div class="w-full max-w-2xl px-2">
+                        <a id="buy-btn" href="#" target="_blank" class="block w-full bg-shopee text-white text-center py-3 md:py-3.5 rounded-sm text-[14px] font-[600] uppercase tracking-wide transition hover:bg-orange-600">
+                            Buy Now
+                        </a>
+                    </div>
+                </div>
+                
+            </div>
+        </main>
     </div>
-  </div>
 
-  <footer>
-    <p>&copy; 2026 LADIES CORNER. All rights reserved. Prices & availability subject to Shopee seller listings.</p>
-  </footer>
+    <!-- Fullscreen Media Modal -->
+    <div id="fullscreen-modal">
+        <button id="close-modal" class="absolute top-4 right-4 text-white text-3xl z-50 p-2"><i class="fas fa-times"></i></button>
+        <div id="fullscreen-container" class="w-full h-full flex items-center justify-center p-4"></div>
+    </div>
 
+    <script>
+        // Data State
+        let appState = {
+            products: [],
+            currentProduct: null
+        };
+
+        // Fallback Mock Data for preview if GitHub is empty or fails
+        const MOCK_DATA = [
+            {
+                id: 1,
+                title: "Example Product - Ladies Elegant Summer Dress (Mock Data)",
+                link: "https://shopee.ph/",
+                stars: 4.8,
+                sold: "1.2k Sold",
+                description: "Welcome to **LADIES CORNER**!\n\nThis is a mock product because your GitHub repository doesn't have releases yet.\n\n* Create a release on GitHub\n* Upload thumbnail.png or thumbnail.mp4\n* Upload product videos and images\n* Upload a CSV for metadata\n\nEnjoy your Shopee Affiliate Page!",
+                thumbnail: { type: 'image', url: 'https://images.unsplash.com/photo-1515347619350-062e24177196?w=500&h=500&fit=crop' },
+                media: [
+                    { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                    { type: 'image', url: 'https://images.unsplash.com/photo-1515347619350-062e24177196?w=800' },
+                    { type: 'image', url: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800' }
+                ]
+            }
+        ];
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', async () => {
+            appState.products = await fetchGitHubReleases();
+            
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            
+            renderGrid(appState.products);
+        });
+
+        // Fetch Logic
+        async function fetchGitHubReleases() {
+            try {
+                const response = await fetch('https://api.github.com/repos/LADIES-CORNER/shopee/releases');
+                if (!response.ok) throw new Error('API Error');
+                
+                const releases = await response.json();
+                if (releases.length === 0) return MOCK_DATA;
+                
+                const products = [];
+                for (const release of releases) {
+                    const assets = release.assets;
+                    
+                    // Metadata defaults
+                    let metadata = {
+                        title: release.name,
+                        link: '#',
+                        stars: 5.0,
+                        sold: '0',
+                        description: release.body || ''
+                    };
+                    
+                    // Parse CSV
+                    const csvAsset = assets.find(a => a.name.endsWith('.csv'));
+                    if (csvAsset) {
+                        try {
+                            const csvRes = await fetch(csvAsset.browser_download_url);
+                            const csvText = await csvRes.text();
+                            const extracted = extractMetadata(csvText);
+                            if (extracted) {
+                                metadata = extracted;
+                            }
+                        } catch (e) { console.error('CSV parse error', e); }
+                    }
+                    
+                    // Find Thumbnail
+                    const isVid = (name) => name.match(/\.(mp4|webm|mov)$/i);
+                    const thumbnailAsset = assets.find(a => a.name.toLowerCase().startsWith('thumbnail.'));
+                    let thumbnail = null;
+                    if (thumbnailAsset) {
+                        thumbnail = {
+                            type: isVid(thumbnailAsset.name) ? 'video' : 'image',
+                            url: thumbnailAsset.browser_download_url
+                        };
+                    }
+                    
+                    // Find Product Media (exclude CSV and Thumbnail), Video First
+                    let mediaAssets = assets.filter(a => 
+                        !a.name.endsWith('.csv') && 
+                        !a.name.toLowerCase().startsWith('thumbnail.') &&
+                        a.name.match(/\.(png|jpe?g|gif|webp|mp4|webm|mov)$/i)
+                    );
+                    
+                    if (mediaAssets.length === 0 && thumbnailAsset) {
+                        mediaAssets.push(thumbnailAsset);
+                    }
+                    
+                    mediaAssets = mediaAssets.sort((a, b) => {
+                        const aVid = isVid(a.name);
+                        const bVid = isVid(b.name);
+                        if (aVid && !bVid) return -1;
+                        if (!aVid && bVid) return 1;
+                        return 0;
+                    });
+                    
+                    const media = mediaAssets.map(a => ({
+                        type: isVid(a.name) ? 'video' : 'image',
+                        url: a.browser_download_url
+                    }));
+                    
+                    products.push({ id: release.id, ...metadata, thumbnail, media });
+                }
+                return products;
+            } catch (error) {
+                console.error(error);
+                return MOCK_DATA;
+            }
+        }
+
+        // Robust CSV Parser and Metadata Extractor
+        function extractMetadata(text) {
+            const rows = []; let row = []; let cur = ''; let inQuote = false;
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i], next = text[i+1];
+                if (char === '"') {
+                    if (inQuote && next === '"') { cur += '"'; i++; }
+                    else { inQuote = !inQuote; }
+                } else if (char === ',' && !inQuote) {
+                    row.push(cur); cur = '';
+                } else if ((char === '\n' || char === '\r') && !inQuote) {
+                    if (char === '\r' && next === '\n') i++;
+                    row.push(cur); rows.push(row); row = []; cur = '';
+                } else { cur += char; }
+            }
+            if (cur !== '' || row.length > 0) { row.push(cur); rows.push(row); }
+            
+            // Clean up rows
+            const cleanRows = rows.map(r => r.filter(c => c.trim() !== '')).filter(r => r.length > 0);
+            
+            let fields = [];
+            if (cleanRows.length === 1) fields = cleanRows[0];
+            else fields = cleanRows.map(r => r.join(', '));
+            
+            fields = fields.map(s => s.trim()).filter(s => s !== '');
+            
+            let title = 'Product Title';
+            let link = '#';
+            let stars = 5.0;
+            let sold = '0';
+            let description = '';
+
+            const linkIdx = fields.findIndex(s => s.startsWith('http'));
+            if (linkIdx !== -1) {
+                link = fields[linkIdx];
+                fields.splice(linkIdx, 1);
+            }
+
+            const starsIdx = fields.findIndex(s => !isNaN(parseFloat(s)) && parseFloat(s) <= 5 && parseFloat(s) >= 0 && s.length < 5);
+            if (starsIdx !== -1) {
+                stars = parseFloat(fields[starsIdx]);
+                fields.splice(starsIdx, 1);
+            }
+
+            if (fields.length > 0) title = fields.shift();
+
+            if (fields.length > 0) {
+                let shortestIdx = 0;
+                for(let i=1; i<fields.length; i++) {
+                    if (fields[i].length < fields[shortestIdx].length) shortestIdx = i;
+                }
+                sold = fields[shortestIdx];
+                fields.splice(shortestIdx, 1);
+                
+                if (fields.length > 0) {
+                    description = fields.join('\\n\\n');
+                }
+            }
+            
+            return { title, link, stars, sold, description };
+        }
+
+        // Render Home Grid
+        function renderGrid(products) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-white cursor-pointer hover:shadow-md transition duration-200 flex flex-col overflow-hidden relative';
+                // Shopee style subtle border
+                card.style.border = "1px solid #f2f2f2";
+                card.onclick = () => openProduct(product);
+                
+                let mediaHtml = '<div class="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-xs">No Thumb</div>';
+                
+                // Prioritize explicit thumbnail, fallback to first media
+                const thumbData = product.thumbnail || (product.media && product.media[0]);
+                
+                if (thumbData) {
+                    if (thumbData.type === 'video') {
+                        mediaHtml = `<video autoplay muted loop playsinline class="w-full aspect-square object-cover" src="${thumbData.url}"></video>`;
+                    } else {
+                        mediaHtml = '<img src="' + thumbData.url + '" class="w-full aspect-square object-cover" loading="lazy">';
+                    }
+                }
+                
+                card.innerHTML = `
+                    <div class="relative w-full aspect-square">
+                        ${mediaHtml}
+                    </div>
+                    <div class="p-3 flex flex-col flex-grow gap-2">
+                        <div class="line-clamp-2 text-[14px] md:text-[16px] text-gray-900 leading-[1.4] font-normal h-10 md:h-[45px]">${product.title}</div>
+                        <div class="flex items-center justify-between mt-auto pt-2">
+                            <div class="flex text-[#ffce3d] text-[10px] md:text-[12px]">${generateStars(product.stars)}</div>
+                            <div class="text-[11px] md:text-[12px] text-[#757575]">${product.sold}</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function generateStars(rating) {
+            let html = '';
+            const full = Math.floor(rating);
+            const half = rating % 1 >= 0.5;
+            for (let i = 0; i < 5; i++) {
+                if (i < full) html += '<i class="fas fa-star"></i>';
+                else if (i === full && half) html += '<i class="fas fa-star-half-alt"></i>';
+                else html += '<i class="far fa-star"></i>';
+            }
+            return html;
+        }
+
+        function formatDescription(text) {
+            if (!text) return '';
+            let fmt = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            fmt = fmt.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            fmt = fmt.replace(/\*(.*?)\*/g, '<em>$1</em>');
+            fmt = fmt.replace(/\\n/g, '<br>'); // Handle explicit \n characters
+            fmt = fmt.replace(/\r?\n/g, '<br>'); // Handle actual newlines
+            return fmt;
+        }
+
+        // Navigation
+        function openProduct(product) {
+            appState.currentProduct = product;
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('product-view').classList.remove('hidden');
+            document.getElementById('back-btn').classList.remove('hidden');
+            window.scrollTo(0, 0);
+            
+            document.getElementById('detail-title').textContent = product.title;
+            document.getElementById('detail-stars').innerHTML = generateStars(product.stars);
+            document.getElementById('detail-rating-text').textContent = parseFloat(product.stars).toFixed(1);
+            document.getElementById('detail-sold').textContent = product.sold;
+            document.getElementById('detail-description').innerHTML = formatDescription(product.description);
+            document.getElementById('buy-btn').href = product.link || '#';
+            
+            // Render Media (No thumbnail)
+            const mc = document.getElementById('product-media');
+            mc.innerHTML = '';
+            
+            const thumbContainer = document.getElementById('product-thumbnails');
+            if (thumbContainer) thumbContainer.innerHTML = '';
+            
+            if (product.media && product.media.length > 0) {
+                product.media.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'media-item relative flex items-center justify-center bg-black cursor-pointer';
+                    div.onclick = () => openFullscreen(item.url, item.type);
+                    
+                    if (item.type === 'video') {
+                        div.innerHTML = `
+                            <video autoplay loop playsinline class="w-full h-full object-contain" src="${item.url}"></video>
+                        `;
+                    } else {
+                        div.innerHTML = '<img src="' + item.url + '" class="w-full h-full object-contain">';
+                    }
+                    mc.appendChild(div);
+
+                    if (thumbContainer) {
+                        const thumbDiv = document.createElement('div');
+                        thumbDiv.className = 'flex-shrink-0 w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded border-2 border-transparent overflow-hidden cursor-pointer';
+                        if (index === 0) thumbDiv.classList.add('border-[#ee4d2d]'); // Active state for first item
+                        
+                        thumbDiv.onclick = () => {
+                            // Scroll to this item
+                            mc.scrollTo({ left: mc.clientWidth * index, behavior: 'smooth' });
+                        };
+
+                        if (item.type === 'video') {
+                            thumbDiv.innerHTML = `
+                                <div class="relative w-full h-full">
+                                    <video muted playsinline class="w-full h-full object-cover" src="${item.url}"></video>
+                                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 text-white text-[10px]">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            `;
+                        } else {
+                            thumbDiv.innerHTML = `<img src="${item.url}" class="w-full h-full object-cover">`;
+                        }
+                        thumbContainer.appendChild(thumbDiv);
+                    }
+                });
+                
+                const ind = document.getElementById('media-indicator');
+                ind.classList.remove('hidden');
+                ind.textContent = '1/' + product.media.length;
+                
+                mc.onscroll = () => {
+                    const index = Math.round(mc.scrollLeft / mc.clientWidth);
+                    ind.textContent = (index + 1) + '/' + product.media.length;
+                    
+                    if (thumbContainer) {
+                        const thumbs = thumbContainer.children;
+                        for (let i=0; i<thumbs.length; i++) {
+                            if (i === index) thumbs[i].classList.add('border-[#ee4d2d]');
+                            else thumbs[i].classList.remove('border-[#ee4d2d]');
+                        }
+                    }
+                };
+            } else {
+                mc.innerHTML = '<div class="media-item flex items-center justify-center bg-gray-100 text-gray-500 text-sm">No media available</div>';
+                document.getElementById('media-indicator').classList.add('hidden');
+            }
+        }
+
+        document.getElementById('back-btn').onclick = () => {
+            document.getElementById('product-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            document.getElementById('back-btn').classList.add('hidden');
+            window.scrollTo(0, 0);
+            
+            // Stop any playing video in product view
+            const mc = document.getElementById('product-media');
+            const vids = mc.getElementsByTagName('video');
+            for(let v of vids) v.pause();
+        };
+
+        // Fullscreen Modal
+        const modal = document.getElementById('fullscreen-modal');
+        const modalContent = document.getElementById('fullscreen-container');
+
+        function openFullscreen(url, type) {
+            modal.classList.add('active');
+            if (type === 'video') {
+                modalContent.innerHTML = `<video controls autoplay playsinline class="max-w-full max-h-full" src="${url}"></video>`;
+            } else {
+                modalContent.innerHTML = '<img src="' + url + '" class="max-w-full max-h-full object-contain">';
+            }
+        }
+
+        document.getElementById('close-modal').onclick = () => {
+            modal.classList.remove('active');
+            modalContent.innerHTML = '';
+        };
+    </script>
 </body>
 </html>
