@@ -314,8 +314,14 @@
                         name: release.name,
                         thumbnail: null,
                         linkUrl: null,
+                        linkDirect: null,
                         media: []
                     };
+                    
+                    // Use the exact release description as the direct link
+                    if (release.body && release.body.trim()) {
+                        prod.linkDirect = release.body.trim();
+                    }
                     
                     release.assets.forEach(asset => {
                         const name = asset.name.toLowerCase();
@@ -405,14 +411,9 @@
             // Set link
             const buyBtn = document.getElementById('buy-btn');
             buyBtn.href = "#";
-            if (currentProduct.linkUrl) {
-                try {
-                    const linkRes = await fetch(currentProduct.linkUrl);
-                    const linkText = await linkRes.text();
-                    buyBtn.href = linkText.trim();
-                } catch(e) {
-                    console.error("Could not fetch link", e);
-                }
+            if (currentProduct.linkDirect) {
+                // Use the exact text from the GitHub release description
+                buyBtn.href = currentProduct.linkDirect;
             }
             
             renderMedia();
