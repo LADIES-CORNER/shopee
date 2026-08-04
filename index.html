@@ -413,10 +413,20 @@
             
             // Set link
             const buyBtn = document.getElementById('buy-btn');
-            buyBtn.href = "#";
             if (currentProduct.linkDirect) {
                 // Use the exact text from the GitHub release description
                 buyBtn.href = currentProduct.linkDirect;
+                buyBtn.textContent = 'BUY NOW';
+                buyBtn.style.backgroundColor = 'var(--shopee-orange)';
+                buyBtn.style.pointerEvents = 'auto';
+                buyBtn.target = '_blank';
+            } else {
+                // No link means sold out
+                buyBtn.href = 'javascript:void(0)';
+                buyBtn.textContent = 'SOLD OUT';
+                buyBtn.style.backgroundColor = '#d1d5db';
+                buyBtn.style.pointerEvents = 'none';
+                buyBtn.removeAttribute('target');
             }
             
             renderMedia();
