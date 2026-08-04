@@ -73,7 +73,7 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 antialiased overflow-x-hidden">
     <div id="app" class="relative min-h-screen">
         
         <!-- Header -->
@@ -187,9 +187,10 @@
             appState.products = await fetchGitHubReleases();
             
             document.getElementById('loading').classList.add('hidden');
-            document.getElementById('home-view').classList.remove('hidden');
-            
             renderGrid(appState.products);
+            
+            // Initial route
+            handleRouting();
         });
 
         // Fetch Logic
@@ -218,9 +219,7 @@
                     const csvAsset = assets.find(a => a.name.endsWith('.csv'));
                     if (csvAsset) {
                         try {
-                            const csvRes = await fetch(csvAsset.url, {
-                                headers: { 'Accept': 'application/octet-stream' }
-                            });
+                            const csvRes = await fetch('https://cors.eu.org/' + csvAsset.browser_download_url);
                             const csvText = await csvRes.text();
                             const extracted = extractMetadata(csvText);
                             if (extracted) {
@@ -345,7 +344,9 @@
                 card.className = 'bg-white cursor-pointer hover:shadow-md transition duration-200 flex flex-col overflow-hidden relative';
                 // Shopee style subtle border
                 card.style.border = "1px solid #f2f2f2";
-                card.onclick = () => openProduct(product);
+                card.onclick = () => {
+                    window.location.hash = '#/product/' + product.id;
+                };
                 
                 let mediaHtml = '<div class="w-full aspect-square bg-gray-100 flex items-center justify-center text-gray-400 text-xs">No Thumb</div>';
                 
@@ -399,7 +400,36 @@
         }
 
         // Navigation
-        function openProduct(product) {
+        function handleRouting() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#/product/')) {
+                const productId = hash.split('#/product/')[1];
+                const product = appState.products.find(p => p.id.toString() === productId);
+                if (product) {
+                    openProductView(product);
+                    return;
+                }
+            }
+            openHomeView();
+        }
+
+        window.addEventListener('hashchange', handleRouting);
+
+        function openHomeView() {
+            document.getElementById('product-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            document.getElementById('back-btn').classList.add('hidden');
+            window.scrollTo(0, 0);
+            
+            // Stop any playing video in product view
+            const mc = document.getElementById('product-media');
+            if (mc) {
+                const vids = mc.getElementsByTagName('video');
+                for(let v of vids) v.pause();
+            }
+        }
+
+        function openProductView(product) {
             appState.currentProduct = product;
             document.getElementById('home-view').classList.add('hidden');
             document.getElementById('product-view').classList.remove('hidden');
@@ -484,15 +514,7 @@
         }
 
         document.getElementById('back-btn').onclick = () => {
-            document.getElementById('product-view').classList.add('hidden');
-            document.getElementById('home-view').classList.remove('hidden');
-            document.getElementById('back-btn').classList.add('hidden');
-            window.scrollTo(0, 0);
-            
-            // Stop any playing video in product view
-            const mc = document.getElementById('product-media');
-            const vids = mc.getElementsByTagName('video');
-            for(let v of vids) v.pause();
+            window.location.hash = '';
         };
 
         // Fullscreen Modal
