@@ -219,7 +219,7 @@
                     const csvAsset = assets.find(a => a.name.endsWith('.csv'));
                     if (csvAsset) {
                         try {
-                            const csvRes = await fetch('https://cors.eu.org/' + csvAsset.browser_download_url);
+                            const csvRes = await fetch('/api/proxy?url=' + encodeURIComponent(csvAsset.browser_download_url));
                             const csvText = await csvRes.text();
                             const extracted = extractMetadata(csvText);
                             if (extracted) {
