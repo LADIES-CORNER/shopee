@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LADIES CORNER - Shopee Affiliate</title>
     <!-- Tailwind CSS for styling via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -218,7 +218,9 @@
                     const csvAsset = assets.find(a => a.name.endsWith('.csv'));
                     if (csvAsset) {
                         try {
-                            const csvRes = await fetch('/api/proxy?url=' + encodeURIComponent(csvAsset.browser_download_url));
+                            const csvRes = await fetch(csvAsset.url, {
+                                headers: { 'Accept': 'application/octet-stream' }
+                            });
                             const csvText = await csvRes.text();
                             const extracted = extractMetadata(csvText);
                             if (extracted) {
