@@ -218,7 +218,7 @@
                     const csvAsset = assets.find(a => a.name.endsWith('.csv'));
                     if (csvAsset) {
                         try {
-                            const csvRes = await fetch(csvAsset.browser_download_url);
+                            const csvRes = await fetch('/api/proxy?url=' + encodeURIComponent(csvAsset.browser_download_url));
                             const csvText = await csvRes.text();
                             const extracted = extractMetadata(csvText);
                             if (extracted) {
@@ -426,7 +426,7 @@
                     
                     if (item.type === 'video') {
                         div.innerHTML = `
-                            <video autoplay loop playsinline class="w-full h-full object-contain" src="${item.url}"></video>
+                            <video autoplay muted loop playsinline preload="auto" class="w-full h-full object-contain" src="${item.url}"></video>
                         `;
                     } else {
                         div.innerHTML = '<img src="' + item.url + '" class="w-full h-full object-contain">';
@@ -500,7 +500,12 @@
         function openFullscreen(url, type) {
             modal.classList.add('active');
             if (type === 'video') {
-                modalContent.innerHTML = `<video controls autoplay playsinline class="max-w-full max-h-full" src="${url}"></video>`;
+                modalContent.innerHTML = `<video id="fullscreen-video" controls autoplay playsinline preload="auto" class="max-w-full max-h-full" src="${url}"></video>`;
+                // Try to play explicitly just in case autoplay fails
+                setTimeout(() => {
+                    const v = document.getElementById('fullscreen-video');
+                    if (v) v.play().catch(e => console.log('Autoplay blocked', e));
+                }, 50);
             } else {
                 modalContent.innerHTML = '<img src="' + url + '" class="max-w-full max-h-full object-contain">';
             }
